@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    command: [ "/app/setup_commands.sh" ]
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+
