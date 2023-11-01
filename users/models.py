@@ -20,11 +20,22 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
-    profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
-    description = models.TextField(blank=True)
+# class UserProfile(models.Model):
+#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
+#                                 related_name='userprofile')
+#     profile_picture = models.ImageField(upload_to='profile_pics/', null=True,
+#                                         blank=True)
+#     description = models.TextField(blank=True)
 
 
-class StudentProfile(UserProfile):
-    grade = models.CharField(max_length=255, blank=True)
+class StudentProfile(models.Model):
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.CASCADE, related_name="studentprofile"
+    )
+    profile_picture = models.ImageField(
+        upload_to="profile_pics/", null=True, blank=True
+    )
+    description_student = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.user.email
