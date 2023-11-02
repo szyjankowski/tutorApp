@@ -13,7 +13,7 @@ class HomePage(TemplateView):
 
 
 class UserRegisterView(generic.CreateView):
-    form_class = CustomAuthenticationForm
+    form_class = CustomUserCreationForm
     template_name = "users/register.html"
     success_url = reverse_lazy("login")
 
