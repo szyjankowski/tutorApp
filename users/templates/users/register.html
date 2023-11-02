@@ -1,0 +1,25 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block head %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register</title>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if form.non_field_errors %}
+<div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+    {{ error }}
+    {% endfor %}
+</div>
+{% endif %}
+<div class="register-container">
+    <h2>Rejestracja</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Zarejestruj się</button>
+    </form>
+</div>
+{% endblock %}
