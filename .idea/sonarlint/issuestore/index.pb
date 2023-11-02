@@ -18,8 +18,5 @@ G
 users/tests.py,2\3\233a16b9bcdb821f3598bcbef17c91efb65fa793
 L
 users/migrations/__init__.py,2\3\230870cff2cd30fc8669ed5dfc155cee3aa7b30f
-:
-
-.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 =
 app/models.py,e\9\e919f1e867cfa561970ba9549250f4d5bb90bcf6
