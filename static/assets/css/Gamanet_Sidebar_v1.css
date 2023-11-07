@@ -1,0 +1,157 @@
+ul {
+  list-style-type: none;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.list-sidebar li a {
+  display: inline-block;
+  width: 100%;
+  vertical-align: middle;
+  padding: 0.625rem 2rem;
+  color: #817f7e;
+  font-weight: 500;
+  position: relative;
+  font-size: 0.875rem;
+  font-family: "Noto Sans";
+  height: 2.5rem;
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+}
+
+.sidebar {
+  width: 14rem;
+  height: 100vh;
+  overflow: auto;
+  border-right: 0.0625rem solid #eae9e9;
+  padding: 2rem 0px;
+  position: fixed;
+  left: 0;
+  background: #ffffff;
+}
+
+.list-sidebar li {
+  list-style-type: none;
+}
+
+.list-sidebar {
+  padding: 0;
+}
+
+.list-sidebar li a.active, .list-sidebar li a:hover {
+  color: #f48220;
+}
+
+.list-sidebar li a.active:before, .list-sidebar li a:hover:before {
+  background: #f48220;
+}
+
+.list-sidebar li a:hover:before {
+  display: none;
+}
+
+.list-sidebar-icon {
+  margin-right: 0.5rem;
+}
+
+#sidebar-main-icon-id {
+  margin-right: 0.5rem;
+}
+
+#icon-name-id {
+  color: #2f2e2d;
+}
+
+.list-sidebar-link .list-sidebar-icon {
+  filter: invert(50%) sepia(5%) saturate(124%) hue-rotate(335deg) brightness(98%) contrast(85%);
+}
+
+.list-sidebar-link:hover .list-sidebar-icon, .list-sidebar-link.active .list-sidebar-icon {
+  filter: invert(53%) sepia(72%) saturate(537%) hue-rotate(344deg) brightness(95%) contrast(103%);
+}
+
+.list-sidebar-link.active:hover::before {
+  display: block;
+}
+
+.list-sidebar-link.active:before {
+  position: absolute;
+  display: block;
+  content: "";
+  height: 100%;
+  width: 0.25rem;
+  background: #0000;
+  left: 0;
+  top: 0;
+  border-radius: 0px 0.625rem 0.625rem 0px;
+}
+
+#sidebar-link-detail-id {
+  border-bottom: 1px solid #eae9e9;
+  padding-bottom: 1rem;
+}
+
+.disabled {
+  cursor: default;
+  color: #bfbdbb !important;
+}
+
+.disabled .list-sidebar-icon {
+  filter: invert(81%) sepia(8%) saturate(67%) hue-rotate(349deg) brightness(96%) contrast(84%);
+}
+
+.disabled:hover .list-sidebar-icon {
+  filter: invert(81%) sepia(8%) saturate(67%) hue-rotate(349deg) brightness(96%) contrast(84%);
+}
+
+@media (max-width: 768px) {
+  .list-sidebar li a {
+    font-size: 0;
+    padding: 0.625rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 3.125rem;
+    z-index: 9;
+  }
+}
+
+@media (max-width: 768px) {
+  .list-sidebar {
+    margin-bottom: 0;
+  }
+}
+
+h1 {
+}
+
+#header-title {
+  margin-left: 15rem;
+  margin-top: 23px;
+}
+
+section {
+}
+
+#tutor-search {
+  margin-left: 14rem;
+}
+
+#tutors-result {
+  padding-top: 5rem;
+  margin-left: 14rem;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+  max-height: 100px;
+  max-width: 100px;
+}

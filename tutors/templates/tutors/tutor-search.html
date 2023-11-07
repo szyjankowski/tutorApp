@@ -1,0 +1,40 @@
+{% extends "app/base-panel.html" %}
+{% load static %}
+
+{% block head %}
+<!--<link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">-->
+<!--<link rel="stylesheet"-->
+<!--      href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap">-->
+<!--<link rel="stylesheet"-->
+<!--      href="https://fonts.googleapis.com/css?family=Noto+Sans&amp;display=swap">-->
+<!--<link rel="stylesheet" href="{% static 'assets/fonts/fontawesome-all.min.css' %}">-->
+<!--<link rel="stylesheet" href="assets/css/Gamanet_Sidebar_v1.css">-->
+{% endblock %}
+
+
+{% block content%}
+<section>
+    <div class="row">
+        <div class="col">
+            <h1 id="header-title" style="text-align: left;font-family: Montserrat, sans-serif;">Znajdź własnego korepetytora</h1>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="row">
+        <div class="col" id="tutor-search">
+            <div class="input-group"><input class="form-control" type="text" placeholder="Search" aria-label="Search" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fas fa-search"></i></button></div>
+        </div>
+    </div>
+    <div class="row" id="tutors-result">
+        <div class="col">
+            <article><img src="{% static 'assets/img/download.png' %}">
+                <h1 style="position: relative;display: inline;padding-bottom: 0px;">&lt;tutor name&gt;</h1>
+                <p style="display: block;transform: translate(104px);padding-bottom: 0;margin: -24px;margin-left: 0px;padding-left: 0px;white-space: pre-line;padding-top: 0px;position: relative;">&lt;tutors subjects&gt; &lt;2&gt; &lt;3&gt;</p>
+            </article>
+        </div>
+    </div>
+</section>
+<script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+
+{% endblock %}
