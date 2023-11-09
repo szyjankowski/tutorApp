@@ -28,10 +28,12 @@
     </div>
     <div class="row" id="tutors-result">
         <div class="col">
+        {% for tutor in tutors %}
             <article><img src="{% static 'assets/img/download.png' %}">
-                <h1 style="position: relative;display: inline;padding-bottom: 0px;">&lt;tutor name&gt;</h1>
-                <p style="display: block;transform: translate(104px);padding-bottom: 0;margin: -24px;margin-left: 0px;padding-left: 0px;white-space: pre-line;padding-top: 0px;position: relative;">&lt;tutors subjects&gt; &lt;2&gt; &lt;3&gt;</p>
+                <h1 style="position: relative;display: inline;padding-bottom: 0px;">{{ tutor.user.email}}</h1>
+                <p style="display: block;transform: translate(104px);padding-bottom: 0;margin: -24px;margin-left: 0px;padding-left: 0px;white-space: pre-line;padding-top: 0px;position: relative;">{{ tutor.subjects }}</p>
             </article>
+        {% endfor %}
         </div>
     </div>
 </section>
