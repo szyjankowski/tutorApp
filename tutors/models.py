@@ -13,7 +13,7 @@ class TutorProfile(models.Model):
     description_tutor = models.TextField(blank=True)
 
     @property
-    def pricelists(self):
+    def price_lists(self):
         return self.pricelist_set.all()
 
     def __str__(self):

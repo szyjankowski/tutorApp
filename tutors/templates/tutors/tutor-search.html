@@ -1,14 +1,7 @@
-{% extends "app/base-panel.html" %}
+{% extends "app/base-student-dashboard.html" %}
 {% load static %}
 
 {% block head %}
-<!--<link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">-->
-<!--<link rel="stylesheet"-->
-<!--      href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap">-->
-<!--<link rel="stylesheet"-->
-<!--      href="https://fonts.googleapis.com/css?family=Noto+Sans&amp;display=swap">-->
-<!--<link rel="stylesheet" href="{% static 'assets/fonts/fontawesome-all.min.css' %}">-->
-<!--<link rel="stylesheet" href="assets/css/Gamanet_Sidebar_v1.css">-->
 {% endblock %}
 
 
@@ -23,7 +16,18 @@
 <section>
     <div class="row">
         <div class="col" id="tutor-search">
-            <div class="input-group"><input class="form-control" type="text" placeholder="Search" aria-label="Search" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fas fa-search"></i></button></div>
+            <form action="{% url 'tutor-search' %}" method="get">
+                <div class="input-group">
+                    <select class="form-select" id="subject-select" name="subject" aria-label="Select subject">
+                        <option value="">Wybierz przedmiot</option>
+                        {% for value, name in subject_choices %}
+                        <option value="{{ value }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-search"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="row" id="tutors-result">
