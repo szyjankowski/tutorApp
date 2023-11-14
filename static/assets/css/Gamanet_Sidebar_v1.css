@@ -149,9 +149,36 @@ section {
   margin-left: 14rem;
 }
 
-img {
-  max-width: 100%;
+#pfp-img {
+  /*max-width: 100%;*/
   max-height: 100%;
   max-height: 100px;
   max-width: 100px;
 }
+
+#profile-content {
+  margin-left: 14.5rem;
+}
+
+#profile-picture {
+  max-width: 250px;
+  max-height: 250px;
+}
+
+#tutor-info {
+  margin-left: 10px;
+}
+
+#tutor-profile-buttons {
+  margin-top: 20px;
+}
+
+.container {
+  margin-top: 100px;
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+#landpage-img-welcome {
+}
+

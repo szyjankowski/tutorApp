@@ -9,11 +9,6 @@ from .models import StudentProfile
 
 # Create your views here.
 
-
-class HomePage(TemplateView):
-    template_name = "users/home.html"
-
-
 @login_required
 def student_profile_view(request):
     # Ensure that we have a studentprofile related to the current user
