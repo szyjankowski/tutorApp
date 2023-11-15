@@ -10,6 +10,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(gettext_lazy("email adress"), unique=True)
     first_name = models.TextField()
     last_name = models.TextField()
+    is_tutor = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)

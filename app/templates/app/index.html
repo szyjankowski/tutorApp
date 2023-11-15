@@ -15,7 +15,11 @@
         <div class="row">
             <div class="col">
                 <h1 style="height: 92px;width: 471px;"><strong>Your own tutor-student</strong><br><strong>platform</strong></h1>
-                <p style="width: 500px;">Effortlessly connect with students.<br>Set up your price list with a single click and&nbsp; individual lessons.</p><button class="btn btn-primary" type="button" style="height: 209px;width: 502.1406px;font-size: 110px;">START</button><a href="#">
+                <p style="width: 500px;">Effortlessly connect with students.<br>Set up your price list with a single click and&nbsp; individual lessons.</p>
+                <a href="{% url 'student-signup' %}" style="text-decoration: none;">
+                <button class="btn btn-primary" type="button" style="height: 209px;width: 502.1406px;font-size: 110px;">START</button>
+                </a>
+                <a href="{% url 'tutor-signup' %}">
                     <p style="text-align: right;margin-right: 41px;width: 505px;">you're a tutor? click here</p>
                 </a>
             </div>

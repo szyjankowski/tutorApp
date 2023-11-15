@@ -9,6 +9,7 @@ from .models import StudentProfile
 
 # Create your views here.
 
+
 @login_required
 def student_profile_view(request):
     # Ensure that we have a studentprofile related to the current user
@@ -34,41 +35,33 @@ class UserLogoutView(LogoutView):
 def tutor_signup(request):
     if request.method == "POST":
         user_form = CustomUserCreationForm(request.POST)
-        profile_form = TutorProfileForm(request.POST, request.FILES)
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             user = user_form.save(commit=False)
+            user.is_tutor = True
             user.save()
-            tutor_profile = profile_form.save(commit=False)
-            tutor_profile.user = user
-            tutor_profile.save()
             return redirect("tutor-profile", tutor_name=user.pk)
     else:
         user_form = CustomUserCreationForm()
-        profile_form = TutorProfileForm()
     return render(
         request,
         "users/tutor_signup.html",
-        {"user_form": user_form, "profile_form": profile_form},
+        {"user_form": user_form},
     )
 
 
 def student_signup(request):
     if request.method == "POST":
         user_form = CustomUserCreationForm(request.POST)
-        profile_form = StudentProfileForm(request.POST, request.FILES)
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             user = user_form.save(commit=False)
+            user.is_tutor = False
             user.save()
-            student_profile = profile_form.save(commit=False)
-            student_profile.user = user
-            student_profile.save()
             # Redirect to a success page.
-            return redirect("student-profile", student_name=user.pk)
+            return redirect("login", student_name=user.pk)
     else:
         user_form = CustomUserCreationForm()
-        profile_form = StudentProfileForm()
     return render(
         request,
         "users/student_signup.html",
-        {"user_form": user_form, "profile_form": profile_form},
+        {"user_form": user_form},
     )
