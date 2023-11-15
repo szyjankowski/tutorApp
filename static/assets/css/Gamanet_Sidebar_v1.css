@@ -171,6 +171,19 @@ section {
   margin-top: 20px;
 }
 
+
+#signup-container {
+  margin-left: 0px;
+  margin-right: 0px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 300%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .container {
   display: flex;
   justify-content: center;
@@ -184,4 +197,3 @@ section {
     height: 400px;
     width: 400px;
 }
-
