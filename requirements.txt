@@ -32,3 +32,4 @@ sqlparse==0.4.4
 tzdata==2023.3
 virtualenv==20.24.6
 yarl==1.9.2
+dotenv

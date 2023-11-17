@@ -5,15 +5,13 @@ from tutors.models import PriceList
 from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
-
-
 @login_required
 def tutor_profile_view(request):
     profile = get_object_or_404(TutorProfile, user=request.user)
     return render(request, "tutors/tutor_profile.html", {"tutor_profile": profile})
 
 
+@login_required
 class FindTutorView(ListView):
     model = TutorProfile
     template_name = "tutors/tutor-search.html"
@@ -38,6 +36,7 @@ class FindTutorView(ListView):
         return queryset
 
 
+@login_required
 def tutor_profile(request, tutor_id):
     tutor = get_object_or_404(TutorProfile, pk=tutor_id)
     pricelists = tutor.pricelists
