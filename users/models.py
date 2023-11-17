@@ -7,6 +7,9 @@ from users.managers import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    USERNAME_FIELD = "email"
+    objects = CustomUserManager()
+
     email = models.EmailField(gettext_lazy("email adress"), unique=True)
     first_name = models.TextField()
     last_name = models.TextField()
@@ -14,10 +17,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-
-    USERNAME_FIELD = "email"
-
-    objects = CustomUserManager()
 
     def __str__(self):
         return self.email

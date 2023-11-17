@@ -1,24 +1,23 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView
-from users.forms import CustomUserCreationForm, TutorProfileForm, StudentProfileForm
+from users.forms import CustomUserCreationForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import StudentProfile
+from users.models import StudentProfile, CustomUser
+from django.views.generic.detail import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-# Create your views here.
+class ProfileView(LoginRequiredMixin, DetailView):
+    model = CustomUser
+    template_name = "users/profile.html"
+    context_object_name = "user"
+    login_url = reverse_lazy('login')
 
+    # redirect_field_name = reverse_lazy('login')
 
-@login_required
-def student_profile_view(request):
-    # Ensure that we have a studentprofile related to the current user
-    student_profile = get_object_or_404(StudentProfile, user=request.user)
-
-    # Render the student profile template with the student profile context
-    return render(
-        request, "users/student_profile.html", {"student_profile": student_profile}
-    )
+    def get_object(self, queryset=None):
+        return self.request.user
 
 
 class UserLoginView(LoginView):
@@ -57,7 +56,7 @@ def student_signup(request):
             user.is_tutor = False
             user.save()
             # Redirect to a success page.
-            return redirect("login", student_name=user.pk)
+            return redirect("login")
     else:
         user_form = CustomUserCreationForm()
     return render(

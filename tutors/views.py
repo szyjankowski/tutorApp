@@ -11,7 +11,6 @@ def tutor_profile_view(request):
     return render(request, "tutors/tutor_profile.html", {"tutor_profile": profile})
 
 
-@login_required
 class FindTutorView(ListView):
     model = TutorProfile
     template_name = "tutors/tutor-search.html"
