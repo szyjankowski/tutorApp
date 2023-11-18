@@ -6,13 +6,14 @@ from django.contrib.auth.decorators import login_required
 from users.models import StudentProfile, CustomUser
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = "users/profile.html"
     context_object_name = "user"
-    login_url = reverse_lazy('login')
+    login_url = reverse_lazy("login")
 
     # redirect_field_name = reverse_lazy('login')
 
@@ -23,12 +24,26 @@ class ProfileView(LoginRequiredMixin, DetailView):
 class UserLoginView(LoginView):
     template_name = "users/login.html"
     redirect_authenticated_user = True
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("profile")
+
+    def form_valid(self, form):
+        messages.success(self.request, "You have successfully logged in.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request, "Login failed. Please try again.", extra_tags="danger"
+        )
+        return super().form_invalid(form)
 
 
 class UserLogoutView(LogoutView):
     template_name = "users/logout.html"
     next_page = reverse_lazy("home")
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, "You have successfully logged out.")
+        return super().dispatch(request, *args, **kwargs)
 
 
 def tutor_signup(request):
@@ -38,6 +53,7 @@ def tutor_signup(request):
             user = user_form.save(commit=False)
             user.is_tutor = True
             user.save()
+
             return redirect("tutor-profile", tutor_name=user.pk)
     else:
         user_form = CustomUserCreationForm()
