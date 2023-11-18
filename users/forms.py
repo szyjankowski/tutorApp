@@ -5,6 +5,7 @@ from users.models import CustomUser
 from django import forms
 from users.models import StudentProfile
 from tutors.models import TutorProfile
+from django.forms import ModelForm
 
 User = get_user_model()
 
@@ -31,13 +32,13 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ("email",)
 
 
-class StudentProfileForm(forms.ModelForm):
+class StudentProfileForm(ModelForm):
     class Meta:
         model = StudentProfile
-        fields = ["profile_picture", "description_student"]
+        fields = ["description_student"]
 
 
-class TutorProfileForm(forms.ModelForm):
+class CustomUserForm(ModelForm):
     class Meta:
-        model = TutorProfile
-        fields = ["profile_picture", "description_tutor"]
+        model = CustomUser
+        fields = ["first_name", "last_name"]

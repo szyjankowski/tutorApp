@@ -1,12 +1,39 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from users.forms import CustomUserCreationForm
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.views.generic.base import TemplateView
 from users.models import StudentProfile, CustomUser
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+
+
+class PersonDetailUpdateView(LoginRequiredMixin, TemplateView):
+    template_name = "users/profile.html"
+
+    def post(
+        self, request, *args, **kwargs
+    ):  # decided to use ugly way of handling this, as using forms only caused problems
+        user = self.request.user
+
+        if description_data := request.POST.get("description_student"):
+            user.studentprofile.description_student = description_data
+            user.studentprofile.save()
+
+        if email_data := request.POST.get("email"):
+            user.email = email_data
+            user.save()
+
+        if first_name_data := request.POST.get("first_name"):
+            user.first_name = first_name_data
+            user.save()
+
+        if last_name_data := request.POST.get("last_name"):
+            user.last_name = last_name_data
+            user.save()
+
+        return redirect("profile")
 
 
 class ProfileView(LoginRequiredMixin, DetailView):

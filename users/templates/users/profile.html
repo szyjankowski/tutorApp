@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'admin-assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
     <link rel="stylesheet" href="{% static 'admin-assets/fonts/fontawesome-all.min.css' %}">
+    <script src="{% static 'app.js' %}"> </script>
 </head>
 
 <body id="page-top">
@@ -199,28 +200,39 @@
                                             <p class="text-primary m-0 fw-bold">User Settings</p>
                                         </div>
                                         <div class="card-body">
-                                            <form>
+                                            <form method="post">
+                                                {% csrf_token %}
                                                 <div class="row">
                                                     <div class="col">
-                                                        {% if user.studentprofile.description_student %}
-                                                        <div class="mb-3"><label class="form-label" for="username"><strong>Description</strong></label><input class="form-control" type="text" id="username" placeholder="{{ user.studentprofile.description }}" name="description_student"></div>
-                                                        {% else %}
-                                                        <div class="mb-3"><label class="form-label" for="username"><strong>Description</strong></label><input class="form-control" type="text" id="username" placeholder="Description not set." name="description_student"></div>
-                                                        {% endif %}
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="description_student"><strong>Description</strong></label>
+                                                            <input class="form-control" type="text" id="description_student" placeholder="{{ user.studentprofile.description_student }}" name="description_student">
+                                                        </div>
                                                     </div>
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="email"><strong>Email Address</strong></label><input class="form-control" type="email" id="email" placeholder="{{ user.email }}" name="email"></div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="email"><strong>Email Address</strong></label>
+                                                            <input class="form-control" type="email" id="email" value="{{ user.email }}" name="email">
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" id="first_name" placeholder="{{ user.first_name }}" name="first_name"></div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="first_name"><strong>First Name</strong></label>
+                                                            <input class="form-control" type="text" id="first_name" value="{{ user.first_name }}" name="first_name">
+                                                        </div>
                                                     </div>
                                                     <div class="col">
-                                                        <div class="mb-3"><label class="form-label" for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" id="last_name" placeholder="{{ user.last_name }}" name="last_name"></div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="last_name"><strong>Last Name</strong></label>
+                                                            <input class="form-control" type="text" id="last_name" value="{{ user.last_name }}" name="last_name">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
+                                                <div class="mb-3">
+                                                    <button class="btn btn-primary btn-sm" type="submit">Save Settings</button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -276,7 +288,7 @@
                 </div>
               {% endfor %}
             {% endif %}
-
+          </main>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
                     <div class="text-center my-auto copyright"><span>Copyright © Brand 2023</span></div>

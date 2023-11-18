@@ -5,6 +5,7 @@ from users.views import (
     student_signup,
     tutor_signup,
     ProfileView,
+    PersonDetailUpdateView,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -16,7 +17,7 @@ urlpatterns = [
     path("logout/", UserLogoutView.as_view(), name="logout"),
     path("signup/tutor/", tutor_signup, name="tutor-signup"),
     path("signup/student/", student_signup, name="student-signup"),
-    path("profile/", ProfileView.as_view(), name='profile')
+    path("profile/", PersonDetailUpdateView.as_view(), name="profile"),
 ]
 
 if settings.DEBUG:
