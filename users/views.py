@@ -15,6 +15,7 @@ class PersonDetailUpdateView(LoginRequiredMixin, TemplateView):
     def post(
         self, request, *args, **kwargs
     ):  # decided to use ugly way of handling this, as using forms only caused problems
+        # because of multiple models - customuser and given profile.
         user = self.request.user
 
         if description_data := request.POST.get("description_student"):
