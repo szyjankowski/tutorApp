@@ -13,7 +13,7 @@ def tutor_profile_view(request):
 
 class FindTutorView(ListView):
     model = TutorProfile
-    template_name = "tutors/tutor-search.html"
+    template_name = "app/tutor-search.html"
     context_object_name = "tutors"
 
     def get_context_data(self, **kwargs):
