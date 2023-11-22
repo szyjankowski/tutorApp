@@ -8,7 +8,6 @@ Welcome to **Tutor Finder**! This is a Django-based web application designed to 
 - 📖 **Student Accounts**: Students can create profiles, search for tutors, and set up sessions.
 - 📚 **Subject-Specific Search**: Find tutors based on specific subjects like Math, Physics, English, and more.
 - 👩‍💻 **User Authentication**: Secure login for both tutors and students.
-- 📈 **Admin Dashboard**: A comprehensive admin panel for managing the website.
 
 ## Technologies
 
