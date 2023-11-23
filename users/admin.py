@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser, StudentProfile
+from users.models import CustomUser
+from tutors.models import Profile
 
 
 class CustomUserAdmin(UserAdmin):
@@ -52,7 +53,7 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 
 
-@admin.register(StudentProfile)
+@admin.register(Profile)
 class StudentProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "description_student")
+    list_display = ("user",)
     search_fields = ("user__email", "user__first_name", "user__last_name")

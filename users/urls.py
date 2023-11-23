@@ -4,7 +4,7 @@ from users.views import (
     UserLogoutView,
     student_signup,
     tutor_signup,
-    ProfileView,
+    # ProfileView,
     PersonDetailUpdateView,
 )
 from django.conf import settings

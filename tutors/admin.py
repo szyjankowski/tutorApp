@@ -1,7 +1,6 @@
 from django.contrib import admin
-from tutors.models import TutorProfile, PriceList
+from tutors.models import Profile, PriceList
 
 # Register your models here.
-admin.site.register(TutorProfile)
 
 admin.site.register(PriceList)

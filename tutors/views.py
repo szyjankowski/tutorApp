@@ -1,18 +1,18 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
-from tutors.models import TutorProfile
+from tutors.models import Profile
 from tutors.models import PriceList
 from django.contrib.auth.decorators import login_required
 
 
 @login_required
 def tutor_profile_view(request):
-    profile = get_object_or_404(TutorProfile, user=request.user)
+    profile = get_object_or_404(Profile, user=request.user)
     return render(request, "tutors/tutor_profile.html", {"tutor_profile": profile})
 
 
 class FindTutorView(ListView):
-    model = TutorProfile
+    model = Profile
     template_name = "app/tutor-search.html"
     context_object_name = "tutors"
 
@@ -37,7 +37,7 @@ class FindTutorView(ListView):
 
 @login_required
 def tutor_profile(request, tutor_id):
-    tutor = get_object_or_404(TutorProfile, pk=tutor_id)
+    tutor = get_object_or_404(Profile, pk=tutor_id)
     pricelists = tutor.pricelists
     return render(
         request, "tutors/tutor-profile.html", {"tutor": tutor, "pricelists": pricelists}

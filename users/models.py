@@ -25,14 +25,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return f"{self.first_name} {self.last_name}"
 
 
-class StudentProfile(models.Model):
-    user = models.OneToOneField(
-        CustomUser, on_delete=models.CASCADE, related_name="studentprofile"
-    )
-    profile_picture = models.ImageField(
-        upload_to="profile_pics/", null=True, blank=True
-    )
-    description_student = models.TextField(blank=True)
-
-    def __str__(self):
-        return self.user.email
+# class StudentProfile(models.Model):
+#     user = models.OneToOneField(
+#         CustomUser, on_delete=models.CASCADE, related_name="studentprofile"
+#     )
+#     profile_picture = models.ImageField(
+#         upload_to="profile_pics/", null=True, blank=True
+#     )
+#     description_student = models.TextField(blank=True)
+#
+#     def __str__(self):
+#         return self.user.email

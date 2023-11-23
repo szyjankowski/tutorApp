@@ -3,14 +3,14 @@ from users.models import CustomUser
 from model_utils import Choices
 
 
-class TutorProfile(models.Model):
+class Profile(models.Model):
     user = models.OneToOneField(
-        CustomUser, on_delete=models.CASCADE, related_name="tutorprofile"
+        CustomUser, on_delete=models.CASCADE, related_name="profile"
     )
     profile_picture = models.ImageField(
         upload_to="profile_pics/", null=True, blank=True
     )
-    description_tutor = models.TextField(blank=True)
+    description = models.TextField(blank=True)
 
     @property
     def price_lists(self):
@@ -28,7 +28,7 @@ class PriceList(models.Model):
     )
 
     tutor = models.ForeignKey(
-        TutorProfile, on_delete=models.CASCADE, related_name="pricelist_set"
+        Profile, on_delete=models.CASCADE, related_name="pricelist_set"
     )
     subject = models.IntegerField(choices=SUBJECTS)
     hour_price = models.DecimalField(max_digits=6, decimal_places=2)
