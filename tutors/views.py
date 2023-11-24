@@ -24,6 +24,7 @@ class FindTutorView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = self.filter_queryset(queryset)
+        queryset = self.only_tutors_filter_queryset(queryset)
         return queryset
 
     def filter_queryset(self, queryset):
@@ -32,6 +33,11 @@ class FindTutorView(ListView):
             queryset = queryset.filter(
                 pricelist_set__subject__in=subject_ids
             ).distinct()
+        return queryset
+
+    def only_tutors_filter_queryset(self, queryset):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user__is_tutor=True)
         return queryset
 
 
