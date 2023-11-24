@@ -8,7 +8,10 @@ class Profile(models.Model):
         CustomUser, on_delete=models.CASCADE, related_name="profile"
     )
     profile_picture = models.ImageField(
-        upload_to="profile_pics/", null=True, blank=True
+        upload_to="profile_pics/",
+        null=True,
+        blank=True,
+        default="profile_pics/user_pfp.png",
     )
     description = models.TextField(blank=True)
 
