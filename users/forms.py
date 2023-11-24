@@ -3,8 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from users.models import CustomUser
 from django import forms
-from users.models import StudentProfile
-from tutors.models import TutorProfile
+from tutors.models import Profile
 from django.forms import ModelForm
 
 User = get_user_model()
@@ -32,10 +31,10 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ("email",)
 
 
-class StudentProfileForm(ModelForm):
-    class Meta:
-        model = StudentProfile
-        fields = ["description_student"]
+# class StudentProfileForm(ModelForm):
+#     class Meta:
+#         model = StudentProfile
+#         fields = ["description_student"]
 
 
 class CustomUserForm(ModelForm):

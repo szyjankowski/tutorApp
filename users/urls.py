@@ -4,8 +4,9 @@ from users.views import (
     UserLogoutView,
     student_signup,
     tutor_signup,
-    ProfileView,
+    # ProfileView,
     PersonDetailUpdateView,
+    PublicProfileView,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -18,6 +19,7 @@ urlpatterns = [
     path("signup/tutor/", tutor_signup, name="tutor-signup"),
     path("signup/student/", student_signup, name="student-signup"),
     path("profile/", PersonDetailUpdateView.as_view(), name="profile"),
+    path("profile/<int:pk>", PublicProfileView.as_view(), name="public-profile"),
 ]
 
 if settings.DEBUG:

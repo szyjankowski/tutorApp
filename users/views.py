@@ -3,24 +3,26 @@ from django.urls import reverse_lazy
 from users.forms import CustomUserCreationForm
 from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView
-from users.models import StudentProfile, CustomUser
+from users.models import CustomUser
+from tutors.models import Profile
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.http import HttpResponse, Http404
+from django.shortcuts import get_object_or_404
 
 
 class PersonDetailUpdateView(LoginRequiredMixin, TemplateView):
     template_name = "users/profile.html"
 
-    def post(
-        self, request, *args, **kwargs
-    ):  # decided to use ugly way of handling this, as using forms only caused problems
+    def post(self, request, *args, **kwargs):  # ugly way of handling this
+        #  as using forms only caused problems
         # because of multiple models - customuser and given profile.
         user = self.request.user
 
-        if description_data := request.POST.get("description_student"):
-            user.studentprofile.description_student = description_data
-            user.studentprofile.save()
+        if description_data := request.POST.get("description"):
+            user.profile.description = description_data
+            user.profile.save()
 
         if email_data := request.POST.get("email"):
             user.email = email_data
@@ -37,16 +39,15 @@ class PersonDetailUpdateView(LoginRequiredMixin, TemplateView):
         return redirect("profile")
 
 
-class ProfileView(LoginRequiredMixin, DetailView):
+class PublicProfileView(LoginRequiredMixin, DetailView):
     model = CustomUser
-    template_name = "users/profile.html"
-    context_object_name = "user"
+    template_name = "users/public-profile.html"
+    context_object_name = "current_profile_user"
     login_url = reverse_lazy("login")
 
-    # redirect_field_name = reverse_lazy('login')
-
     def get_object(self, queryset=None):
-        return self.request.user
+        user = get_object_or_404(CustomUser, pk=self.kwargs.get("pk"))
+        return user
 
 
 class UserLoginView(LoginView):
