@@ -36,7 +36,6 @@ class FindTutorView(ListView):
         return queryset
 
     def only_tutors_filter_queryset(self, queryset):
-        queryset = super().get_queryset()
         queryset = queryset.filter(user__is_tutor=True)
         return queryset
 
