@@ -8,6 +8,8 @@ from tutors.models import Profile
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.http import HttpResponse, Http404
+from django.shortcuts import get_object_or_404
 
 
 class PersonDetailUpdateView(LoginRequiredMixin, TemplateView):
@@ -37,24 +39,15 @@ class PersonDetailUpdateView(LoginRequiredMixin, TemplateView):
         return redirect("profile")
 
 
-# class ProfileView(LoginRequiredMixin, DetailView):
-#     model = CustomUser
-#     template_name = "users/profile.html"
-#     context_object_name = "user"
-#     login_url = reverse_lazy("login")
-#
-#     def get_object(self, queryset=None):
-#         return self.request.user
-
-
 class PublicProfileView(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = "users/public-profile.html"
-    context_object_name = "user"
+    context_object_name = "current_profile_user"
     login_url = reverse_lazy("login")
 
     def get_object(self, queryset=None):
-        return CustomUser.objects.get(id=self.kwargs.get("pk"))
+        user = get_object_or_404(CustomUser, pk=self.kwargs.get("pk"))
+        return user
 
 
 class UserLoginView(LoginView):

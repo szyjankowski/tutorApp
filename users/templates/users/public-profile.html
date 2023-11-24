@@ -2,11 +2,11 @@
 
 {% block content %}
 <div class="container-fluid">
-    <h3 class="text-dark mb-4">Profile</h3>
+    <h3 class="text-dark mb-4">Profile {{ current_profile_user.get_full_name }}</h3>
     <div class="row mb-3">
         <div class="col-lg-4">
             <div class="card mb-3">
-                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="dogs/image2.jpeg" width="160" height="160" />
+                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="{{ current_profile_user.profile.profile_picture.url }}" width="160" height="160" />
                     <div class="mb-3"></div>
                 </div>
             </div>
@@ -15,8 +15,9 @@
                     <h6 class="text-primary fw-bold m-0">Pricelist</h6>
                 </div>
                 <div class="card-body">
-                    <h4 class="small fw-bold" style="margin-bottom: 25px;">[subject]<span class="float-end">[price]</span></h4>
-                    <h4 class="small fw-bold" style="margin-bottom: 25px;">[subject2]<span class="float-end">[price2]</span></h4>
+                    {% for pricelist in current_profile_user.profile.pricelist_set.all %}
+                    <h4 class="small fw-bold" style="margin-bottom: 25px;">{{ pricelist.get_subject_display }}<span class="float-end">{{ pricelist.hour_price }} PLN</span></h4>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -55,24 +56,29 @@
                 <div class="col">
                     <div class="card shadow mb-3">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">User Settings</p>
+                            <p class="text-primary m-0 fw-bold">User information</p>
                         </div>
                         <div class="card-body">
                             <form>
                                 <div class="row">
                                     <div class="col">
-                                        <div class="mb-3"><label class="form-label" for="username"><strong>Username</strong></label><input id="username" class="form-control" type="text" placeholder="user.name" name="username" disabled /></div>
+                                        <div class="mb-3">
+                                        <label class="form-label" for="username"><strong>Username</strong></label>
+                                        <input id="username" class="form-control" type="text" placeholder="{{ current_profile_user.profile.description }}" name="description" disabled /></div>
                                     </div>
                                     <div class="col">
-                                        <div class="mb-3"><label class="form-label" for="email"><strong>Email Address</strong></label><input id="email" class="form-control" type="email" placeholder="user@example.com" name="email" disabled /></div>
+                                        <div class="mb-3"><label class="form-label" for="email"><strong>Email Address</strong></label>
+                                        <input id="email" class="form-control" type="email" placeholder="{{ current_profile_user.email }}" name="email" disabled /></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <div class="mb-3"><label class="form-label" for="first_name"><strong>First Name</strong></label><input id="first_name" class="form-control" type="text" placeholder="John" name="first_name" disabled /></div>
+                                        <div class="mb-3"><label class="form-label" for="first_name"><strong>First Name</strong></label>
+                                        <input id="first_name" class="form-control" type="text" placeholder="{{ current_profile_user.first_name }}" name="first_name" disabled /></div>
                                     </div>
                                     <div class="col">
-                                        <div class="mb-3"><label class="form-label" for="last_name"><strong>Last Name</strong></label><input id="last_name" class="form-control" type="text" placeholder="Doe" name="last_name" disabled /></div>
+                                        <div class="mb-3"><label class="form-label" for="last_name"><strong>Last Name</strong></label>
+                                        <input id="last_name" class="form-control" type="text" placeholder="{{ current_profile_user.last_name }}" name="last_name" disabled /></div>
                                     </div>
                                 </div>
                                 <div class="mb-3"></div>
@@ -81,7 +87,7 @@
                     </div>
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Contact Settings</p>
+                            <p class="text-primary m-0 fw-bold">Contact information</p>
                         </div>
                         <div class="card-body">
                             <form>
