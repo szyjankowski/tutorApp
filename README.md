@@ -1,5 +1,7 @@
 # 📚 Tutor Finder - A Django Web Application
 
+---* Project still in development *---
+
 Welcome to **Tutor Finder**! This is a Django-based web application designed to connect students with tutors. Whether you're looking to learn new skills or teach, this platform makes it easy and fun! 🌟
 
 ## Features
@@ -55,4 +57,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Project Link: [https://github.com/your-username/tutor-finder](https://github.com/your-username/tutor-finder)
+Project Link: [https://github.com/szjankowski/tutorApp](https://github.com/szjankowski/tutorApp)
