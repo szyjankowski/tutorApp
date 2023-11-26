@@ -24,7 +24,7 @@ class FindTutorView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = self.filter_queryset(queryset)
-        queryset = self.only_tutors_filter_queryset(queryset)
+        queryset = self.filter_queryset_only_tutors(queryset)
         return queryset
 
     def filter_queryset(self, queryset):
@@ -35,15 +35,7 @@ class FindTutorView(ListView):
             ).distinct()
         return queryset
 
-    def only_tutors_filter_queryset(self, queryset):
+    @staticmethod
+    def filter_queryset_only_tutors(queryset):
         queryset = queryset.filter(user__is_tutor=True)
         return queryset
-
-
-@login_required
-def tutor_profile(request, tutor_id):
-    tutor = get_object_or_404(Profile, pk=tutor_id)
-    pricelists = tutor.pricelists
-    return render(
-        request, "tutors/tutor-profile.html", {"tutor": tutor, "pricelists": pricelists}
-    )

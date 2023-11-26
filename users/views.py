@@ -4,11 +4,10 @@ from users.forms import CustomUserCreationForm
 from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView
 from users.models import CustomUser
-from tutors.models import Profile
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.http import HttpResponse, Http404
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 
@@ -47,7 +46,11 @@ class PublicProfileView(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         user = get_object_or_404(CustomUser, pk=self.kwargs.get("pk"))
-        return user
+
+        if user.is_tutor:
+            return user
+        else:
+            raise Http404("User is not a tutor.")
 
 
 class UserLoginView(LoginView):
