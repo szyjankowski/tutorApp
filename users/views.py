@@ -9,33 +9,43 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.views.generic import UpdateView
+from users.forms import UserForm, ProfileForm, ProfilePictureForm
 
 
 class PersonDetailUpdateView(LoginRequiredMixin, TemplateView):
     template_name = "users/profile.html"
 
-    def post(self, request, *args, **kwargs):  # ugly way of handling this
-        #  as using forms only caused problems
-        # because of multiple models - customuser and given profile.
-        user = self.request.user
+    def get(self, request, *args, **kwargs):
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+        picture_form = ProfilePictureForm(instance=request.user.profile)
+        return self.render_to_response(
+            {
+                "user_form": user_form,
+                "profile_form": profile_form,
+                "picture_form": picture_form,
+            }
+        )
 
-        if description_data := request.POST.get("description"):
-            user.profile.description = description_data
-            user.profile.save()
+    def post(self, request, *args, **kwargs):
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
+        picture_form = ProfilePictureForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
 
-        if email_data := request.POST.get("email"):
-            user.email = email_data
-            user.save()
+        if "profile_picture" in request.FILES:
+            if picture_form.is_valid():
+                picture_form.save()
 
-        if first_name_data := request.POST.get("first_name"):
-            user.first_name = first_name_data
-            user.save()
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
 
-        if last_name_data := request.POST.get("last_name"):
-            user.last_name = last_name_data
-            user.save()
-
-        return redirect("profile")
+        return redirect("profile")  # Replace 'profile' with your success URL
 
 
 class PublicProfileView(LoginRequiredMixin, DetailView):
@@ -86,7 +96,7 @@ def tutor_signup(request):
             user.is_tutor = True
             user.save()
 
-            return redirect("tutor-profile", tutor_name=user.pk)
+            return redirect("profile")
     else:
         user_form = CustomUserCreationForm()
     return render(

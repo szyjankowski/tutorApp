@@ -33,3 +33,6 @@ tzdata==2023.3
 virtualenv==20.24.6
 yarl==1.9.2
 dotenv
+
+python-dotenv~=1.0.0
+django-model-utils~=4.3.1

@@ -1,19 +1,20 @@
-from django.shortcuts import render, get_object_or_404
 from django.views.generic.list import ListView
-from tutors.models import Profile
-from tutors.models import PriceList
-from django.contrib.auth.decorators import login_required
+from users.models import Profile
+from tutors.models import PriceList, Lesson
+from django.views.generic.edit import CreateView
+from tutors.forms import CreateLessonForm
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from app.mixins import IsStudentMixin, IsTutorMixin
+from django.shortcuts import get_object_or_404
+from users.models import CustomUser
 
 
-@login_required
-def tutor_profile_view(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    return render(request, "tutors/tutor_profile.html", {"tutor_profile": profile})
+class FindTutorView(IsStudentMixin, LoginRequiredMixin, ListView):
+    """View for students to look for tutors, only available for students."""
 
-
-class FindTutorView(ListView):
     model = Profile
-    template_name = "app/tutor-search.html"
+    template_name = "tutors/tutor-search.html"
     context_object_name = "tutors"
 
     def get_context_data(self, **kwargs):
@@ -39,3 +40,26 @@ class FindTutorView(ListView):
     def filter_queryset_only_tutors(queryset):
         queryset = queryset.filter(user__is_tutor=True)
         return queryset
+
+
+class LessonCreateView(IsTutorMixin, LoginRequiredMixin, CreateView):
+    model = Lesson
+    template_name = "tutors/create-lesson.html"
+    form_class = CreateLessonForm
+    success_url = reverse_lazy("profile")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["student_user"] = get_object_or_404(
+            CustomUser, pk=self.kwargs.get("pk")
+        )
+        # context["subject_choices"] = self.request.user
+        return context
+
+    def form_valid(self, form):
+        form.instance.tutor = self.request.user
+        form.instance.student = get_object_or_404(CustomUser, pk=self.kwargs.get("pk"))
+        form.instance.calendar_meet_link = "TODO"
+        form.instance.status = 1
+
+        return super().form_valid(form)
