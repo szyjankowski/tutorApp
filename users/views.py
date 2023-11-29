@@ -11,6 +11,15 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import UpdateView
 from users.forms import UserForm, ProfileForm, ProfilePictureForm
+from django.contrib.auth import get_user_model
+
+# imports for mail
+from users.tokens import account_activation_token
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import EmailMessage
 
 
 class PersonDetailUpdateView(LoginRequiredMixin, TemplateView):
@@ -94,9 +103,11 @@ def tutor_signup(request):
         if user_form.is_valid():
             user = user_form.save(commit=False)
             user.is_tutor = True
+            user.is_active = False
             user.save()
+            activateEmail(request, user, user_form.cleaned_data.get("email"))
+            return redirect("login")
 
-            return redirect("profile")
     else:
         user_form = CustomUserCreationForm()
     return render(
@@ -112,8 +123,9 @@ def student_signup(request):
         if user_form.is_valid():
             user = user_form.save(commit=False)
             user.is_tutor = False
+            user.is_active = False
             user.save()
-            # Redirect to a success page.
+            activateEmail(request, user, user_form.cleaned_data.get("email"))
             return redirect("login")
     else:
         user_form = CustomUserCreationForm()
@@ -122,3 +134,46 @@ def student_signup(request):
         "users/student_signup.html",
         {"user_form": user_form},
     )
+
+
+def activate(request, uidb64, token):
+    user_model = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = user_model.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, user.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        messages.success(request, "You've activated your account, log in now.")
+        return redirect("login")
+    else:
+        messages.error(request, "Link is invalid!")
+
+    return redirect("landing-page")
+
+
+def activateEmail(request, user, to_email):
+    mail_subject = "Activate link - tutorApp"
+    message = render_to_string(
+        "users/email.html",
+        {
+            "domain": get_current_site(request).domain,
+            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+            "token": account_activation_token.make_token(user),
+            "protocol": "https" if request.is_secure() else "http",
+        },
+    )
+    email = EmailMessage(mail_subject, message, to=[to_email])
+    if email.send():
+        messages.success(
+            request, f"Activate your account at {to_email} please check spam folder"
+        )
+    else:
+        messages.error(
+            request,
+            "Something went wrong... check if you have entered correct email",
+        )
