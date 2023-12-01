@@ -9,33 +9,51 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from users.forms import UserForm, ProfileForm, ProfilePictureForm
+from django.contrib.auth import get_user_model
+
+# imports for mail
+from users.tokens import account_activation_token
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import EmailMessage
 
 
 class PersonDetailUpdateView(LoginRequiredMixin, TemplateView):
     template_name = "users/profile.html"
 
-    def post(self, request, *args, **kwargs):  # ugly way of handling this
-        #  as using forms only caused problems
-        # because of multiple models - customuser and given profile.
-        user = self.request.user
+    def get(self, request, *args, **kwargs):
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+        picture_form = ProfilePictureForm(instance=request.user.profile)
+        return self.render_to_response(
+            {
+                "user_form": user_form,
+                "profile_form": profile_form,
+                "picture_form": picture_form,
+            }
+        )
 
-        if description_data := request.POST.get("description"):
-            user.profile.description = description_data
-            user.profile.save()
+    def post(self, request, *args, **kwargs):
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
+        picture_form = ProfilePictureForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
 
-        if email_data := request.POST.get("email"):
-            user.email = email_data
-            user.save()
+        if "profile_picture" in request.FILES:
+            if picture_form.is_valid():
+                picture_form.save()
 
-        if first_name_data := request.POST.get("first_name"):
-            user.first_name = first_name_data
-            user.save()
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
 
-        if last_name_data := request.POST.get("last_name"):
-            user.last_name = last_name_data
-            user.save()
-
-        return redirect("profile")
+        return redirect("profile")  # Replace 'profile' with your success URL
 
 
 class PublicProfileView(LoginRequiredMixin, DetailView):
@@ -84,9 +102,11 @@ def tutor_signup(request):
         if user_form.is_valid():
             user = user_form.save(commit=False)
             user.is_tutor = True
+            user.is_active = False
             user.save()
+            activateEmail(request, user, user_form.cleaned_data.get("email"))
+            return redirect("login")
 
-            return redirect("tutor-profile", tutor_name=user.pk)
     else:
         user_form = CustomUserCreationForm()
     return render(
@@ -102,8 +122,9 @@ def student_signup(request):
         if user_form.is_valid():
             user = user_form.save(commit=False)
             user.is_tutor = False
+            user.is_active = False
             user.save()
-            # Redirect to a success page.
+            activateEmail(request, user, user_form.cleaned_data.get("email"))
             return redirect("login")
     else:
         user_form = CustomUserCreationForm()
@@ -112,3 +133,46 @@ def student_signup(request):
         "users/student_signup.html",
         {"user_form": user_form},
     )
+
+
+def activate(request, uidb64, token):
+    user_model = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = user_model.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, user.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        messages.success(request, "You've activated your account, log in now.")
+        return redirect("login")
+    else:
+        messages.error(request, "Link is invalid!")
+
+    return redirect("landing-page")
+
+
+def activateEmail(request, user, to_email):
+    mail_subject = "Activate link - tutorApp"
+    message = render_to_string(
+        "users/email.html",
+        {
+            "domain": get_current_site(request).domain,
+            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+            "token": account_activation_token.make_token(user),
+            "protocol": "https" if request.is_secure() else "http",
+        },
+    )
+    email = EmailMessage(mail_subject, message, to=[to_email])
+    if email.send():
+        messages.success(
+            request, f"Activate your account at {to_email} please check spam folder"
+        )
+    else:
+        messages.error(
+            request,
+            "Something went wrong... check if you have entered correct email",
+        )

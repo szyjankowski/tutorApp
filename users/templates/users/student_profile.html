@@ -1,9 +1,0 @@
-{% extends "app/base.html" %}
-
-{% block content %}
-  <div class="student-profile">
-    <h1>{{ student_profile.user.get_full_name }}</h1>
-    <img src="{{ student_profile.profile_picture.url }}" alt="Profile Picture">
-    <p>{{ student_profile.description_student }}</p>
-  </div>
-{% endblock %}
