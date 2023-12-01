@@ -9,7 +9,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.views.generic import UpdateView
 from users.forms import UserForm, ProfileForm, ProfilePictureForm
 from django.contrib.auth import get_user_model
 

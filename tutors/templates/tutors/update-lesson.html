@@ -1,0 +1,41 @@
+{% extends "app/base-index.html" %}
+{% load static %}
+{% block content %}
+    <section class="position-relative py-4 py-xl-5" style="text-align: left;">
+        <div id="signup-container" class="container">
+            <div class="row mb-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <h2>Edit lesson with student: {{ student_user.get_full_name }} on subject: {{ lesson.get_subject_display }}</h2>
+                    <p class="w-lg-50"></p>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 col-xl-4">
+                    <div class="card mb-5">
+                        <div class="card-body d-flex flex-column align-items-center">
+                            <form class="text-center" method="post">
+                                {% csrf_token %}
+                                <div class="mb-3"><input class="form-control" type="text" name="title" value="{{ lesson.title }}"></div>
+                                <div class="mb-3"><input class="form-control" type="text" name="description" value="{{ lesson.description }}" style="height: 90px;"></div>
+                                <div class="mb-3"><input class="form-control" type="text" name="duration" value="{{ lesson.duration }}"></div>
+                                <div class="mb-3"><input class="form-control" type="date" name="date" value={{ lesson.date|date:'Y-m-d' }}></div>
+                                <div class="mb-3"><input class="form-control" type="time" name="start_time" value="{{ lesson.start_time|time:'H:i' }}"></div>
+                                <div class="mb-3">
+                                    <select class="form-select" id="subject-select" name="subject" aria-label="Select subject">
+                                        <option value="">Wybierz przedmiot</option>
+                                        {% for price in user.profile.pricelist_set.all %}
+                                        <option value="{{ price.subject }}" {% if price.get_subject_display == lesson.get_subject_display %}selected{% endif %}>
+                                            {{ price.get_subject_display }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Confirm</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -8,6 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from app.mixins import IsStudentMixin, IsTutorMixin
 from django.shortcuts import get_object_or_404
 from users.models import CustomUser
+from django.views.generic.edit import UpdateView
+from django.http import Http404
 
 
 class FindTutorView(IsStudentMixin, LoginRequiredMixin, ListView):
@@ -53,7 +55,6 @@ class LessonCreateView(IsTutorMixin, LoginRequiredMixin, CreateView):
         context["student_user"] = get_object_or_404(
             CustomUser, pk=self.kwargs.get("pk")
         )
-        # context["subject_choices"] = self.request.user
         return context
 
     def form_valid(self, form):
@@ -63,3 +64,23 @@ class LessonCreateView(IsTutorMixin, LoginRequiredMixin, CreateView):
         form.instance.status = 1
 
         return super().form_valid(form)
+
+
+class LessonUpdateView(UpdateView):
+    model = Lesson
+    template_name = "tutors/update-lesson.html"
+    form_class = CreateLessonForm
+    success_url = reverse_lazy("profile")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lesson = self.get_object()
+        context["lesson"] = lesson
+        context["student_user"] = lesson.student
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        lesson = self.get_object()
+        if lesson.tutor != request.user:
+            raise Http404("You do not have permission to edit this lesson.")
+        return super().dispatch(request, *args, **kwargs)
