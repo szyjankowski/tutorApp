@@ -22,6 +22,7 @@
                 {% if user.is_tutor %}
                 <h3 class="text-uppercase"><strong><em><a style="text-decoration: underline; color: black;" href="{% url 'update-lesson' lesson.id %}"> {{ lesson.title }} </a></em></strong></h3>
                 {% else %}
+                <h3 class="text-uppercase"><strong><em>{{ lesson.title }}</em></strong></h3>
                 {% endif %}
                 <ul class="list-inline">
                     <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ lesson.date|date:"l" }}</li>
