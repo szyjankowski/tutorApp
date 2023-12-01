@@ -1,0 +1,39 @@
+{% extends 'app/base-new-student.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'assets/calendar/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/calendar/fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/calendar/css/Bootstrap-4-Calendar-No-Custom-Code.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/calendar/css/Calendar-BS4-news.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/calendar/css/Calendar-BS4.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+     <div style="margin:46px;">
+         {% for lesson in lessons %}
+         <div class="row row-striped">
+            <div class="col-2 text-center ">
+                <h1 class="display-4 "><span class="badge date-green">{{ lesson.date.day }}</span></h1>
+                <h2>{{ lesson.date|date:"M" }}</h2>
+            </div>
+            <div class="col-10">
+                {% if user.is_tutor %}
+                <h3 class="text-uppercase"><strong><em><a style="text-decoration: underline; color: black;" href="{% url 'update-lesson' lesson.id %}"> {{ lesson.title }} </a></em></strong></h3>
+                {% else %}
+                <h3 class="text-uppercase"><strong><em>{{ lesson.title }}</em></strong></h3>
+                {% endif %}
+                <ul class="list-inline">
+                    <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ lesson.date|date:"l" }}</li>
+                    <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ lesson.start_time }} - {{ lesson.end_time }}</li>
+                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Meet Link</li>
+                </ul>
+                <p>{{ lesson.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+	 </div>
+    <script src="{% static 'assets/calendar/bootstrap/js/bootstrap.min.js' %}"></script>
+  </div>
+{% endblock %}
