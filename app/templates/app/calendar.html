@@ -1,0 +1,40 @@
+{% extends 'app/base-new-student.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'assets/calendar/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/calendar/fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/calendar/css/Bootstrap-4-Calendar-No-Custom-Code.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/calendar/css/Calendar-BS4-news.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/calendar/css/Calendar-BS4.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="calendar">
+        <div class="d-flex align-items-center">
+            <i class="far fa-calendar fa-3x me-3"></i>
+            <h1 class="month fw-bold mb-0 text-uppercase" id="monthHeader">{{ date }}</h1>
+        </div>
+        <p class="fst-italic text-muted mb-5">No events for this day.<br></p>
+        <ol class="day-names list-unstyled">
+			<li class="fw-bold text-uppercase">Sunday</li>
+            <li class="fw-bold text-uppercase">Monday</li>
+            <li class="fw-bold text-uppercase">Tuesday</li>
+            <li class="fw-bold text-uppercase">Wednesday</li>
+            <li class="fw-bold text-uppercase">thursday</li>
+            <li class="fw-bold text-uppercase">Friday</li>
+            <li class="fw-bold text-uppercase">Saturday</li>
+        </ol>
+        <ol class="days list-unstyled" id="daysList">
+            <!-- Days will be dynamically generated here -->
+        </ol>
+    </div>
+</div>
+
+  <script src="{% static 'assets/calendar/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript">
+        window.lessons = JSON.parse('{{ lessons_json | safe }}');
+    </script>
+    <script src="{% static 'assets/calendar/main.js' %}"></script>
+{% endblock %}
