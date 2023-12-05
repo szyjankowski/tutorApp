@@ -22,4 +22,5 @@ urlpatterns = [
     path("", include("app.urls")),
     path("", include("users.urls")),
     path("", include("tutors.urls")),
+    path("", include("googlecalendar.urls")),
 ]

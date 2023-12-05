@@ -43,6 +43,8 @@ class Lesson(models.Model):
 
         super(Lesson, self).save(*args, **kwargs)
 
+    # property end_time
+
 
 class PriceList(models.Model):
     SUBJECTS = Choices(
