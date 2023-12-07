@@ -4,6 +4,7 @@ from model_utils import Choices
 from users.models import Profile, CustomUser
 from datetime import datetime
 from datetime import timedelta
+from googlecalendar.event_create import create_calendar_event
 
 
 class Lesson(models.Model):
@@ -22,7 +23,7 @@ class Lesson(models.Model):
     duration = models.IntegerField()
     date = models.DateField()
     start_time = models.TimeField()
-    end_time = models.TimeField(editable=False)
+    # end_time = models.TimeField(editable=False)
     tutor = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name="tutor_lessons"
     )
@@ -33,14 +34,21 @@ class Lesson(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES)
     calendar_meet_link = models.CharField(max_length=500)
 
+    @property
+    def end_time(self):
+        start_datetime = datetime.combine(self.date, self.start_time)
+        end_datetime = start_datetime + timedelta(minutes=self.duration)
+        return end_datetime.time()
+
     def __str__(self):
         return f"{self.title} || {self.tutor.first_name} {self.tutor.last_name}"
 
     def save(self, *args, **kwargs):
-        if self.start_time and self.duration:
-            start_datetime = datetime.combine(self.date, self.start_time)
-            self.end_time = (start_datetime + timedelta(minutes=self.duration)).time()
+        super(Lesson, self).save(*args, **kwargs)
+        event = create_calendar_event(self)
 
+        # Update the lesson with information from the event
+        self.calendar_meet_link = event["hangoutLink"]
         super(Lesson, self).save(*args, **kwargs)
 
     # property end_time
