@@ -45,9 +45,8 @@ class PersonDetailUpdateView(LoginRequiredMixin, TemplateView):
             request.POST, request.FILES, instance=request.user.profile
         )
 
-        if "profile_picture" in request.FILES:
-            if picture_form.is_valid():
-                picture_form.save()
+        if "profile_picture" in request.FILES and picture_form.is_valid():
+            picture_form.save()
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
@@ -65,10 +64,10 @@ class PublicProfileView(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         user = get_object_or_404(CustomUser, pk=self.kwargs.get("pk"))
 
-        if user.is_tutor:
-            return user
-        else:
-            raise Http404("User is not a tutor.")
+        # if user.is_tutor:
+        return user
+        # else:
+        #     raise Http404("User is not a tutor.")
 
 
 class UserLoginView(LoginView):
@@ -140,7 +139,7 @@ def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = user_model.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, user.DoesNotExist):
+    except (TypeError, ValueError, OverflowError, user.DoesNotExist):  # srapwdzic
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):

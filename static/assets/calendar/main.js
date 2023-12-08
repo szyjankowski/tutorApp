@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             divEvent.classList.add('event', 'bg-success');
             const spanEvent = document.createElement('span');
             spanEvent.textContent = lesson.fields.title;
+
             divEvent.appendChild(spanEvent);
             li.appendChild(divEvent);
         }

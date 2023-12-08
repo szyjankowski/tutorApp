@@ -16,6 +16,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
+    google_credentials = models.JSONField(null=True, blank=True)
+    google_email = models.EmailField(max_length=254, unique=True, null=True, blank=True)
 
     def __str__(self):
         return self.email

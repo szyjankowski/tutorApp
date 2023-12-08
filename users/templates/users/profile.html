@@ -38,6 +38,11 @@
                         <br>
                         {% endfor %}
                     {% endif %}
+                    {% if user.google_credentials %}
+                    <button class="btn btn-primary btn-sm btn-success" disabled type="button">Google calendar connected.</button>
+                    {% else %}
+                    <button class="btn btn-primary btn-sm btn-danger" type="button">Google calendar sign in</button>
+                    {% endif %}
                 </div>
             </div>
         </div>
