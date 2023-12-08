@@ -1,18 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from datetime import datetime
 from tutors.models import Lesson
 from django.core.serializers import serialize
-from django.views.generic.list import ListView
 import os
-from django.contrib import messages
-
+from django.http import HttpResponseBadRequest
 # imports for google api
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
-from google.auth.transport.requests import Request
-from google.oauth2 import id_token
 
 
 def create_calendar_event(lesson):
@@ -102,34 +98,35 @@ def callback(request):
 
     user.save()
 
-    return redirect("create-event")
-
-
-def create_event(request):
-    # Load the user's credentials from the session
-    credentials = Credentials.from_authorized_user_info(request.user.google_credentials)
-
-    # Build the calendar service
-    service = build("calendar", "v3", credentials=credentials)
-
-    # Define the event
-    event = {
-        "summary": "Meeting with tutor",
-        "start": {
-            "dateTime": "2022-01-01T10:00:00",
-            "timeZone": "America/Los_Angeles",
-        },
-        "end": {
-            "dateTime": "2022-01-01T11:00:00",
-            "timeZone": "America/Los_Angeles",
-        },
-    }
-
-    # Create the event
-    event = service.events().insert(calendarId="primary", body=event).execute()
-    messages.success(request, "Event created successfully")
-
     return redirect("calendar")
+
+
+#
+# def create_event(request):
+#     # Load the user's credentials from the session
+#     credentials = Credentials.from_authorized_user_info(request.user.google_credentials)
+#
+#     # Build the calendar service
+#     service = build("calendar", "v3", credentials=credentials)
+#
+#     # Define the event
+#     event = {
+#         "summary": "Meeting with tutor",
+#         "start": {
+#             "dateTime": "2022-01-01T10:00:00",
+#             "timeZone": "America/Los_Angeles",
+#         },
+#         "end": {
+#             "dateTime": "2022-01-01T11:00:00",
+#             "timeZone": "America/Los_Angeles",
+#         },
+#     }
+#
+#     # Create the event
+#     event = service.events().insert(calendarId="primary", body=event).execute()
+#     messages.success(request, "Event created successfully")
+#
+#     return redirect("calendar")
 
 
 class CalendarView(TemplateView):

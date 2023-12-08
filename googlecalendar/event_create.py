@@ -1,7 +1,8 @@
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 import uuid
+from django.contrib import messages
 
 
 def create_calendar_event(lesson):
@@ -47,6 +48,5 @@ def create_calendar_event(lesson):
         .insert(calendarId="primary", body=event, conferenceDataVersion=1)
         .execute()
     )
-
     # Save the Google Meet link in the lesson
     return event

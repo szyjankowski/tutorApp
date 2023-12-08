@@ -64,10 +64,10 @@ class PublicProfileView(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         user = get_object_or_404(CustomUser, pk=self.kwargs.get("pk"))
 
-        if user.is_tutor:
-            return user
-        else:
-            raise Http404("User is not a tutor.")
+        # if user.is_tutor:
+        return user
+        # else:
+        #     raise Http404("User is not a tutor.")
 
 
 class UserLoginView(LoginView):

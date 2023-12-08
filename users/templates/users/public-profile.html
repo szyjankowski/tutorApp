@@ -15,9 +15,14 @@
                     <h6 class="text-primary fw-bold m-0">Pricelist</h6>
                 </div>
                 <div class="card-body">
-                    {% for pricelist in current_profile_user.profile.pricelist_set.all %}
-                    <h4 class="small fw-bold" style="margin-bottom: 25px;">{{ pricelist.get_subject_display }}<span class="float-end">{{ pricelist.hour_price }} PLN</span></h4>
-                    {% endfor %}
+                    {% if current_profile_user.is_tutor %}
+                        {% for pricelist in current_profile_user.profile.pricelist_set.all %}
+                        <h4 class="small fw-bold" style="margin-bottom: 25px;">{{ pricelist.get_subject_display }}<span class="float-end">{{ pricelist.hour_price }} PLN</span></h4>
+                        {% endfor %}
+                    {% else %}
+                    <a class="btn btn-primary btn-sm" role="button" href="{% url 'create-lesson' current_profile_user.id %}">Setup a lesson</a>
+                    <button class="btn btn-primary btn-sm" type="button" disabled>Message this student (todo)</button>
+                    {% endif %}
                 </div>
             </div>
         </div>
