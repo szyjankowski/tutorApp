@@ -40,7 +40,8 @@ PROJECT_APPS = [
     "app.apps.AppConfig",
     "users.apps.UsersConfig",
     "tutors.apps.TutorsConfig",
-    "googlecalendar.apps.GooglecalendarConfig",
+    "gglcalendar.apps.GglcalendarConfig",
+    "wallet.apps.WalletConfig",
 ]
 
 INSTALLED_APPS = (

@@ -4,7 +4,8 @@ from model_utils import Choices
 from users.models import Profile, CustomUser
 from datetime import datetime
 from datetime import timedelta
-from googlecalendar.event_create import create_calendar_event
+from gglcalendar.event_create import create_calendar_event
+from django.utils import timezone
 
 
 class Lesson(models.Model):
@@ -51,7 +52,21 @@ class Lesson(models.Model):
         self.calendar_meet_link = event["hangoutLink"]
         super(Lesson, self).save(*args, **kwargs)
 
-    # property end_time
+    def is_completed(self):
+        now = timezone.now()
+        end_datetime = datetime.combine(self.date, self.end_time)
+        return now > end_datetime
+
+    @property
+    def cost(self):
+        try:
+            price = PriceList.objects.get(
+                tutor=self.tutor.profile, subject=self.subject
+            )
+            float_price = price.hour_price
+            return float_price
+        except PriceList.DoesNotExist:
+            return None
 
 
 class PriceList(models.Model):

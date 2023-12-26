@@ -14,6 +14,9 @@
                         </form>
                         <button class="btn btn-primary btn-sm btn-change-photo" type="button">Change Photo</button>
                     </div>
+                    <div class="mb-3">
+                        <p style="color: black"> Wallet balance = {{ user.wallet.balance }}PLN</p>
+                    </div>
                 </div>
             </div>
             <div class="card shadow mb-4">
@@ -41,7 +44,7 @@
                     {% if user.google_credentials %}
                     <button class="btn btn-primary btn-sm btn-success" disabled type="button">Google calendar connected.</button>
                     {% else %}
-                    <button class="btn btn-primary btn-sm btn-danger" type="button">Google calendar sign in</button>
+                    <a href="{% url 'start-auth' %}"><button class="btn btn-primary btn-sm btn-danger" type="button">Google calendar sign in</button></a>
                     {% endif %}
                 </div>
             </div>
@@ -145,7 +148,7 @@
     </div>
     <div class="card shadow mb-5">
         <div class="card-header py-3">
-            <p class="text-primary m-0 fw-bold">Forum Settings</p>
+            <p class="text-primary m-0 fw-bold">Reviews</p>
         </div>
         <div class="card-body">
             <div class="row">

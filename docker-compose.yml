@@ -8,4 +8,16 @@ services:
       - .:/code
     ports:
       - "8000:8000"
+  db:
+    image: postgres:13.3
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=tutorApp
+    ports:
+      - "5432:5432"
 
+volumes:
+  postgres_data:

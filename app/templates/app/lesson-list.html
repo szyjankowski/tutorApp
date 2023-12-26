@@ -28,10 +28,31 @@
                     <li class="list-inline-item"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ lesson.date|date:"l" }}</li>
                     <li class="list-inline-item"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ lesson.start_time }} - {{ lesson.end_time }}</li>
                     <li class="list-inline-item"><i class="fa fa-user" aria-hidden="true"></i> tutor: {{ lesson.tutor.get_full_name }}</li>
-                    <li class="list-inline-item"><i class="fa fa-user" aria-hidden="true"></i> student: {{ lesson.student.get_full_name }}</li>
-                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i> Meet Link</li>
+                    <li class="list-inline-item"><i class="fa fa-user" aria-hidden="true"></i><a href="{% url 'public-profile' lesson.student.id %}">student: {{ lesson.student.get_full_name }}</a></li>
+                    <li class="list-inline-item"><i class="fa fa-location-arrow" aria-hidden="true"></i><a target="_blank" href="{{ lesson.calendar_meet_link }}"> {{ lesson.calendar_meet_link }}</a></li>
+{#                    {% if current_time < lesson.start_time %}#}
+                    {% if lesson.status == 2 %}
+                    <li class="list-inline-item"><button disabled class="btn btn-primary btn-success">Lesson completed.</button></li>
+                    {% elif lesson.status == 3 %}
+                    <li class="list-inline-item"><button disabled class="btn btn-primary btn-danger">Lesson cancelled.</button></li>
+                    {% else %}
+                    <li class="list-inline-item">
+                        <form action="{% url 'complete_lesson' lesson.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-sm">Completed?</button>
+                        </form>
+                    </li>
+                    <li class="list-inline-item">
+                        <!-- Show Cancel Button -->
+{#                    {% elif current_time > lesson.end_time %}#}
+                        <form action="{% url 'cancel_lesson' lesson.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                        </form>
+                    </li>
+                    {% endif %}
                 </ul>
-                <p>{{ lesson.description }}</p>
+            <p>{{ lesson.description }}</p>
             </div>
         </div>
         {% endfor %}

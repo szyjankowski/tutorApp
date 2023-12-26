@@ -4,3 +4,5 @@ __pycache__/
 *.pyc
 .env
 client_secrets.json
+.pytest_cache
+.vscode
