@@ -1,4 +1,3 @@
-import django.test.client
 from django.test import TestCase
 from users.models import CustomUser
 from model_bakery import baker

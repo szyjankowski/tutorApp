@@ -4,9 +4,11 @@ from django.views.generic.list import ListView
 from django.views import View
 from django.db import transaction
 from wallet.models import Wallet, Transaction, TRANSACTION_TYPES
-from django.utils import timezone
 from datetime import datetime
 from django.contrib import messages
+from django.db.models import Q
+from django.utils import timezone
+import datetime
 
 
 def index(request):
@@ -26,15 +28,10 @@ class LessonListView(ListView):  # show cancelled lessons and or completed
         return context
 
     def get_queryset(self):
+        user = self.request.user
         queryset = super().get_queryset()
-        if self.request.user.is_tutor:
-            return queryset.filter(tutor=self.request.user.id).order_by(
-                "date", "start_time"
-            )
-        else:
-            return queryset.filter(student=self.request.user.id).order_by(
-                "date", "start_time"
-            )
+        q = Q(tutor=user.id) if user.is_tutor else Q(student=user.id)
+        return queryset.filter(q).order_by("date", "start_time")
 
 
 class CompleteLessonView(View):
@@ -77,13 +74,19 @@ class CancelLessonView(View):
     def post(self, request, lesson_id):
         lesson = get_object_or_404(Lesson, id=lesson_id)
         now = timezone.now()
-        start_datetime = datetime.combine(lesson.date, lesson.start_time)
+        start_datetime = datetime.datetime.combine(lesson.date, lesson.start_time)
+
+        # Make start_datetime offset-aware
+        if timezone.is_naive(start_datetime):
+            start_datetime = timezone.make_aware(
+                start_datetime, timezone.get_current_timezone()
+            )
 
         if now < start_datetime:
             lesson.status = Lesson.STATUS_CHOICES.CANCELLED
             lesson.save()
             # Redirect to a cancelled confirmation page
-            return redirect("cancelled_lesson_view")
+            return redirect("lesson-list")
 
         # Redirect to an error page if cancellation is not allowed
         return redirect("error_view")
