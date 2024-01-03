@@ -23,7 +23,7 @@ Welcome to **Tutor Finder**! This is a Django-based web application designed to 
 
 1. **Clone the Repository**
     ```
-    git clone https://github.com/your-username/tutor-finder.git
+    git clone https://github.com/szjankowski/tutorApp.git
     ```
 
 2. **Install Requirements**
