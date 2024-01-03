@@ -43,13 +43,14 @@ class CancelLessonViewTest(TestCase):
 
         self.client.force_login(self.tutor)
         response = self.client.post(
-            reverse("cancel_lesson", kwargs={'lesson_id': self.lesson.id}))
+            reverse("cancel_lesson", kwargs={"lesson_id": self.lesson.id})
+        )
 
         self.lesson.refresh_from_db()
 
         self.assertEqual(self.lesson.status, Lesson.STATUS_CHOICES.CANCELLED)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('lesson-list'))
+        self.assertRedirects(response, reverse("lesson-list"))
 
     def test_tutor_cant_cancel_lesson_after_start(self):
         # Set lesson date to past
@@ -59,7 +60,8 @@ class CancelLessonViewTest(TestCase):
 
         self.client.force_login(self.tutor)
         response = self.client.post(
-            reverse("cancel_lesson", kwargs={'lesson_id': self.lesson.id}))
+            reverse("cancel_lesson", kwargs={"lesson_id": self.lesson.id})
+        )
         self.assertNotEqual(self.lesson.status, Lesson.STATUS_CHOICES.CANCELLED)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('lesson-list'))
+        self.assertRedirects(response, reverse("lesson-list"))

@@ -72,12 +72,13 @@ class CompleteLessonView(View):
 
 # the cancel button is not there when someone tries to cancel after the time.
 
+
 class CancelLessonView(View):
     def post(self, request, lesson_id):
         lesson = get_object_or_404(Lesson, id=lesson_id)
         start_datetime = timezone.make_aware(
             datetime.datetime.combine(lesson.date, lesson.start_time),
-            timezone.get_current_timezone()
+            timezone.get_current_timezone(),
         )
 
         # If current time is before the lesson start time, allow cancellation
