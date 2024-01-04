@@ -17,22 +17,6 @@ class Wallet(models.Model):
         return f"{self.user.email} - Balance: {self.balance}"
 
 
-# class Transaction(models.Model):
-#     TRANSACTION_TYPES = Choices(
-#         (1, 'DEPOSIT', 'Deposit'),
-#         (2, 'WITHDRAWAL', 'Withdrawal'),
-#     )
-#
-#     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE,
-#                                related_name='transactions')
-#     transaction_type = models.IntegerField(choices=TRANSACTION_TYPES)
-#     amount = models.DecimalField(max_digits=10, decimal_places=2)
-#     timestamp = models.DateTimeField(auto_now_add=True)
-#
-#     def __str__(self):
-#         return f"Transaction {self.id} - {self.get_transaction_type_display()} - {self.amount}"
-
-
 class Transaction(models.Model):
     sender = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name="sent_transactions"
@@ -45,4 +29,7 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Transaction {self.id} - {self.get_transaction_type_display()} - {self.amount} from {self.sender} to {self.receiver}"
+        return (
+            f"Transaction {self.id} - {self.get_transaction_type_display()} -"
+            f" {self.amount} from {self.sender} to {self.receiver}"
+        )
