@@ -6,20 +6,41 @@ services:
     command: [ "/app/setup_commands.sh" ]
     volumes:
       - .:/code
+      - media_volume:/code/media
     ports:
       - "8000:8000"
     depends_on:
       - db
+    env_file:
+      - .env
   db:
     image: postgres:13.3
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=tutorApp
+      - POSTGRES_NAME=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     ports:
       - "5432:5432"
-
+    env_file:
+      - .env
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    env_file:
+      - .env
+  celery:
+    build: .
+    command: celery -A core worker --loglevel=info
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
 volumes:
   postgres_data:
+  media_volume:

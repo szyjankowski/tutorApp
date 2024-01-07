@@ -34,6 +34,7 @@ class CancelLessonViewTest(TestCase):
 
     def tearDown(self):
         self.mock_create_calendar_event.stop()
+        super().tearDown()
 
     def test_tutor_can_cancel_lesson_before_start(self):
         # Set lesson date to future
