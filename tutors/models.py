@@ -34,6 +34,7 @@ class Lesson(models.Model):
     subject = models.IntegerField(choices=SUBJECTS)
     status = models.IntegerField(choices=STATUS_CHOICES)
     calendar_meet_link = models.CharField(max_length=500)
+    cancelled_at = models.DateTimeField(null=True, blank=True)
 
     @property
     def end_time(self):
@@ -45,6 +46,9 @@ class Lesson(models.Model):
         return f"{self.title} || {self.tutor.first_name} {self.tutor.last_name}"
 
     def save(self, *args, **kwargs):
+        if self.status == self.STATUS_CHOICES.CANCELLED and not self.cancelled_at:
+            self.cancelled_at = timezone.now()
+
         super(Lesson, self).save(*args, **kwargs)
         event = create_calendar_event(self)
 
