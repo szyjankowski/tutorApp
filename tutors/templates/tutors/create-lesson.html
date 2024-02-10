@@ -22,7 +22,7 @@
                                 <div class="mb-3"><input class="form-control" type="time" name="start_time" placeholder="Hour of start"></div>
                                 <div class="mb-3">
                                     <select class="form-select" id="subject-select" name="subject" aria-label="Select subject">
-                                        <option value="">Choose subject</option>
+                                        <option value="">Wybierz przedmiot</option>
                                         {% for price in user.profile.pricelist_set.all %}
                                         <option value="{{ price.subject }}">{{ price.get_subject_display }}</option>
                                         {% endfor %}

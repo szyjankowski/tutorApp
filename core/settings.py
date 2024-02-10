@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from datetime import timedelta
 
 load_dotenv()
 
@@ -91,6 +90,13 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+#         "NAME": "sqlite3.db",  # Or path to database file if using sqlite3.
+#     }
+# }
 
 DATABASES = {
     "default": {
@@ -170,14 +176,3 @@ PASSWORD_RESET_TIMEOUT = 14400
 
 CELERY_BROKER_URL = "redis://redis:6379/0"
 CELERY_RESULT_BACKEND = "redis://redis:6379/0"
-
-CELERY_BEAT_SCHEDULE = {
-    "delete_cancelled_lessons_every_day": {
-        "task": "app.tasks.delete_cancelled_lessons",
-        "schedule": timedelta(days=1),
-    },
-}
-
-# Only for developments, turn OFF in production.
-
-CELERY_TASK_ALWAYS_EAGER = True
