@@ -5,7 +5,7 @@
         <div id="signup-container" class="container">
             <div class="row mb-5">
                 <div class="col-md-8 col-xl-6 text-center mx-auto">
-                    <h2>Lesson setup with student: {{ student_user.get_full_name }}</h2>
+                    <h2>Pricelist creation page</h2>
                     <p class="w-lg-50"></p>
                 </div>
             </div>
@@ -15,19 +15,15 @@
                         <div class="card-body d-flex flex-column align-items-center">
                             <form class="text-center" method="post">
                                 {% csrf_token %}
-                                <div class="mb-3"><input class="form-control" type="text" name="title" placeholder="Title of the meeting"></div>
-                                <div class="mb-3"><input class="form-control" type="text" name="description" placeholder="Description" style="height: 90px;"></div>
-                                <div class="mb-3"><input class="form-control" type="text" name="duration" placeholder="Duration in minutes"></div>
-                                <div class="mb-3"><input class="form-control" type="date" name="date" placeholder="Date"></div>
-                                <div class="mb-3"><input class="form-control" type="time" name="start_time" placeholder="Hour of start"></div>
                                 <div class="mb-3">
                                     <select class="form-select" id="subject-select" name="subject" aria-label="Select subject">
                                         <option value="">Choose subject</option>
-                                        {% for price in user.profile.pricelist_set.all %}
-                                        <option value="{{ price.subject }}">{{ price.get_subject_display }}</option>
+                                        {% for subject_value, subject_display in subjects %}
+                                        <option value="{{ subject_value }}">{{ subject_display }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
+                                <div class="mb-3"><input class="form-control" type="number" name="hour_price" placeholder="Price for an hour"></div>
                                 <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Confirm</button></div>
                             </form>
                         </div>

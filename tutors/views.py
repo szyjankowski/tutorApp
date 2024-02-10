@@ -2,7 +2,7 @@ from django.views.generic.list import ListView
 from users.models import Profile
 from tutors.models import PriceList, Lesson
 from django.views.generic.edit import CreateView
-from tutors.forms import CreateLessonForm
+from tutors.forms import CreateLessonForm, CreatePriceListForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from app.mixins import IsStudentMixin, IsTutorMixin
@@ -84,3 +84,21 @@ class LessonUpdateView(UpdateView):
         if lesson.tutor != request.user:
             raise Http404("You do not have permission to edit this lesson.")
         return super().dispatch(request, *args, **kwargs)
+
+
+class CreatePriceListView(IsTutorMixin, CreateView):
+    model = PriceList
+    template_name = "tutors/create-pricelist.html"
+    form_class = CreatePriceListForm
+    success_url = reverse_lazy("profile")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        subjects = PriceList.SUBJECTS
+        context["subjects"] = subjects
+        return context
+
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.tutor = user.profile
+        return super().form_valid(form)
