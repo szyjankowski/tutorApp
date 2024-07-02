@@ -1,5 +1,5 @@
 
----* Project abandoned because of current job and freelance work  *---
+---__Project abandoned because of a current job and freelance work__  ---
 
 
 ---------------------------------------
